@@ -2,6 +2,7 @@ import numpy as np
 import copy
 
 
+
 def relu(Z):
     """
     Computes the reLU activation function.
@@ -154,3 +155,4 @@ def update_params(params, grads, alpha):
         parameters["b" + str(l+1)] = parameters["b" + str(l+1)] - alpha * grads["db" + str(l+1)]
     
     return parameters
+
