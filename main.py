@@ -1,5 +1,5 @@
 from preprocess_data import *
-from model import *
+from base_model import *
 from PIL import Image
 
 
@@ -9,18 +9,37 @@ X_train, X_test = reshape_standardize_train_test_examples(X_train_orig, X_test_o
 
 
 def accuracy(X, Y, parameters):
+    """
+    Compute the accuracy of the predictions of the neural network.
+
+    Args:
+        X (numpy.ndarray): Input data, shape(Input size, num examples).
+        Y (numpy.ndarray): Input labels, shape(1, num examples).
+        parameters (dict): Parameters learned by the model.
+
+    Returns:
+        accuracy (float): Accuracy of the model's predictions.
+    """    
     m = X.shape[1]
 
-    AL, caches = forward_prop(X, parameters)
-    predictions = (AL > 0.5)
+    predictions = predict(X, parameters)
 
     accuracy = np.sum(predictions == Y) / m
 
     return accuracy
 
 def predict(X, parameters):
-    m = X.shape[1]
+    """
+    Predicts the labels for a given input dataset using the trained parameters.
 
+    Args:
+        X (numpy.ndarray): Input data, shape(Input size, num examples).
+        parameters (dict): Parameters learned by the model.
+
+    Returns:
+        prediction (numpy.ndarray): Predicted labels for the input data, shape(1, num_examples).
+    """    
+    
     AL, caches = forward_prop(X, parameters)
     prediction = (AL > 0.5)
 
@@ -31,7 +50,7 @@ layer_dims = [12288, 20, 7, 5, 1]
 
 test_set_accuracy = 0
 while test_set_accuracy < 0.8:
-    parameters, cost= nn_model(X_train, Y_train, layer_dims, 3000, 0.0075)
+    parameters, cost= nn_model_base(X_train, Y_train, layer_dims, 3000, 0.0075)
     print("cost at the end", cost)
 
     train_set_accuracy = accuracy(X_train, Y_train, parameters)
@@ -53,4 +72,4 @@ image = image.reshape((1, num_px * num_px * 3)).T
 
 predicted_image = int(predict(image, parameters))
 
-print ("y = " + str(np.squeeze(predicted_image)) + ", your L-layer model predicts a \"" + classes[int(np.squeeze(predicted_image)),].decode("utf-8") +  "\" picture.")
+print ("y = " + str(np.squeeze(predicted_image)) + ", It's a \"" + classes[int(np.squeeze(predicted_image)),].decode("utf-8") +  "\" picture.")
