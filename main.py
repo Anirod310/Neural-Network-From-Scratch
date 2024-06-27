@@ -23,4 +23,4 @@ print(f'accuracy of the model on the training set : {train_set_accuracy * 100:.2
 test_set_accuracy = accuracy(X_test, Y_test, parameters)
 print(f'accuracy of the model on the test set : {test_set_accuracy * 100:.2f}%')
 
-predict_cat_noncat("db3.jpg", num_px, parameters, classes)
+predict_cat_noncat("db5.jpeg", num_px, parameters, classes)
