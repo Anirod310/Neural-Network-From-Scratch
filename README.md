@@ -1,5 +1,5 @@
 # Neural-network-from-scratch
-A project in which I learn to code a L-layer neural network from scratch, using numpy, h5py and matplotlib. The project is separated in different stages : 
+A project in which I learn to code a L-layer neural network from scratch, using numpy and matplotlib. The project is separated in different stages : 
 - Code a simple L-layer neural network with basic parameters, hyperparameters and gradient descent implementation, without any regularisation or optimisation method :
     - Try different parameter initialisations.
     - Try different activation functions.
