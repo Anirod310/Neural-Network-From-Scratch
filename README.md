@@ -18,7 +18,6 @@ A project in which I learn to code a L-layer neural network from scratch, using 
 
 
 You can follow the entire project walkthrough in the [report](REPORT.md) file.
-<<<<<<< HEAD
 ## Environment
 
 To ensure reproducibility, the following environment setup is recommended:
@@ -40,5 +39,3 @@ If you are having trouble getting the model to work, you can check the following
 If you still have trouble, you can ask for help on a forum or chat room dedicated to linear regression, or contact me at **bousek.dorian@gmail.com**.  
 
 I hope this helps ! 
-=======
->>>>>>> ccd938b7df10944d2866f2cb9ace3675de033d8b
