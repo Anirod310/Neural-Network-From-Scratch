@@ -114,6 +114,64 @@ Activation functions play a crucial role in the performance of neural networks. 
 
 2. Tanh activation function
     - Formula : $\tanh(z) = \frac{e^z - e^{-z}}{e^z + e^{-z}}$
-    - Characteristics : Outputs values between 0 and infiny, introduces sparsity in the network by zeroing out negative values.
+    - Characteristics : Outputs values between -1 and 1, zero-centered, which can help mitigate some issues seen with sigmoid.
+    - Potential issues : Can still cause vanishing gradients, though less severe than sigmoid.
+
 3. ReLU activation function 
     - Formula : $\text{ReLU}(z) = \max(0, z)$
+    - Characteristics : Outputs values between 0 and infinity, introduces sparsity in the network by zeroing out negative values.
+    - Potential issues : Can cause dead neurons if too many values are zeroed out.
+
+To understand the impact of different activation functions, we conducted several experiments using identical conditions, wich are, again, those presented above in the **Base model summary**, but this time by modifying the activation function of the hidden layer, and using the He initialization for every tests. 
+
+**Results**
+
+| Activation function    | Training Accuracy | Testing Accuracy | Cost before training | Cost after training  |
+|------------------------|-------------------|------------------|----------------------|----------------------|
+| Sigmoid activation     | 97.13%            | 72.00%           | 0.65                 | 0.22                 |
+| Tanh activation        | 99.04%            | 72.00%           | 0.71                 | 0.05                 |
+| ReLU activation        | 100%              | 72.00%           | 0.68                 | 0.06                 | 
+
+**Discussion**
+
+- Sigmoid : While it provided decent performances, the model converged more slowly compared to other activation functions due to the vanishing gradient probblem.
+
+- Tanh : Showed better performance than sigmoid, beneftining from being zero-centered, which helped in faster convergence. 
+
+- ReLU : Achieved the highest performances, particulary effective in promoting sparsity and speeding up convergence. However, some neurons might became inactive due to the zeroing effect.
+
+**Conclusion**
+
+We can thus say that choosing wisely the activation functions used in the hidden and output layers can significantly increase the performances of the model, leading to faster convvergence and better overall accuracy. 
+
+#### III - <u>Number and Size of Layers</u>
+
+The architecture of a neural network, including the numbber of layers and the number of neurons in each layer, can significanttly impact its performance. Deeper netwworks with more layers can learn more complexe patterns, while wider networks with more neurons per layer can capture more features. 
+
+1. Shallow Network
+    - 2-layer neural network
+    - Characteristics: Simpler, fewer paramaters, faster training, but may struggle with complex paterns.
+
+2. Deep Network
+    - 4-layer neural network
+    - Characteristics: More complex, more parameters, longer training time, better at capturing intricate patterns.
+
+3. Wide Network
+    - 2 layer neural network with more neurons per layer
+    - Characteristics: More neurons per layer, can capture more features, but increases the number of paramaters and therefore the computing cost.
+
+4. Deep and wide Network
+    - 4-layer neural network with more neurons per layer
+    - Characteristics: Combines depth and width, highest capacity for learning, but requires careful tuning to avoid oeverfitting.
+
+To understand the impact of different activation functions, we conducted several experiments using identical conditions, wich are, again, those presented above in the **Base model summary**, but this time by modifying the Number and Size of Layers of the model, and using the ReLU activation function and the He Initialization for every tests.
+
+**Results**
+
+| Number/Size of the layer | Training Accuracy | Testing Accuracy | Cost before training | Cost after training  |
+|--------------------------|-------------------|------------------|----------------------|----------------------|
+| Shallow Network          | 100%              | 72.00%           | 0.68                 | 0.06                 |
+| Deep Network             | 99.04%            | 72.00%           | 0.68                 | 0.05                 |
+| Wide Network             | 100%              | 72.00%           | 0.68                 | 0.06                 |
+| Deep and wide Network    | 100%              | 72.00%           | 0.68                 | 0.06                 | 
+
