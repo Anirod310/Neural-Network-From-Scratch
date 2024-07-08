@@ -170,8 +170,23 @@ To understand the impact of different activation functions, we conducted several
 
 | Number/Size of the layer | Training Accuracy | Testing Accuracy | Cost before training | Cost after training  |
 |--------------------------|-------------------|------------------|----------------------|----------------------|
-| Shallow Network          | 100%              | 72.00%           | 0.68                 | 0.06                 |
-| Deep Network             | 99.04%            | 72.00%           | 0.68                 | 0.05                 |
-| Wide Network             | 100%              | 72.00%           | 0.68                 | 0.06                 |
-| Deep and wide Network    | 100%              | 72.00%           | 0.68                 | 0.06                 | 
+| Shallow Network          | 100%              | 70.00%           | 0.68                 | 0.05                 |
+| Deep Network             | 98.09%            | 56.00%           | 0.68                 | 0.10                 |
+| Wide Network             | 100%              | 78.00%           | 0.69                 | 0.01                 |
+| Deep and wide Network    | 100%              | 80.00%           | 1.21                 | 0.08                 | 
 
+**Discussion**
+
+ - Shallow Network : Provided descent performance but could be improved a lot.
+
+ - Deep Network : The ReLU activation function appears to have caused the "dying ReLU" problem, significantly decreasing the model's accuracy by zeroing out neurons with negative values. The deeper the network, the more negative values can occur, leading to a substantial number of inactive neurons. This issue is highlighted by the fact that using the Tanh activation function with the same number of layers resulted in an accuracy improvement of over 20%, even with He initialization. In this case, employing the Leaky ReLU activation function could be a potential solution. Aside from this issue, the deep network with the Tanh activation function performs better than the shallow network, demonstrating that with the right approach, a deep network usually outperforms a shallow one. 
+
+ - Wide Network : The wider network imrpoved testing accuracy compared to the shallow and deep networks, indicating that the additional neuroons helped in capturing more features without more overtiffing.
+
+ - Deep and wide Network : This network configuration performed the best on the testing set, showing that a combination of depth and width helped a lot in learning more complex patterns and generalizing better to unseend data.
+
+ **Conclusion**
+
+ The results highlight the importance of balancing the depths and width of the network. While deeper networks can capture more complex patterns, they are prone to overfitting and to other specific problems like dying ReLU which can deacreases significantly the accuracy of the model. Wider networks can help in capturing more features, but there is a trade-off between complexity and overfitting. The deep and wide network configuration proovided the best results, sugesting that a balanced approach in increasing both the depth and width of the network can lead to better generalization and performance.  
+ By carefully selecting the number and size of layers, we can enhance the learning capacity of the model, leading to imrpoved performance on both training and testing sets.  
+ Building an L-layer model, where you can adjust the size of the model by simply modifying the values in a list(as in the model used here), is, in my opinion, an excellent approach to create a neural network that effectively fits the data you are analyzing and predicting. This flexibility allows for easy comparison of accuracies and helps in tailoring the model to achive optimal performance based on the dataset you are using.
