@@ -17,7 +17,7 @@ Without delay, let's get starded !
 ## Step 1 : Basic Neural Network
 In this section, we build and evaluate a simple neural network model. This basic model serves as a foundation for further improvments and enhancements that will be discussed in subsequent sections.
 
-### Model architecture
+### A - Model architecture
 
 #### I - <u>Data preprocessing</u>
 To begin with, the data set we're using is composed by two h5 files(representing training and testing set respectively), the traing set consisting of 209 cat or non-cat images and the testing set of 50 images. The output label is either 1(if it's a cat image) or 0(if it's a non-cat image).  
@@ -40,7 +40,7 @@ The activation functions we use are sigmoid, reLU and tanh.
 
 We'll see after how the modification of the paramaters, hyperparameters, number and size of layers and activation functions impacts the learning process of the model.
 
-### Results analysis
+### B - Results analysis
 
 To evaluate the differences among various parameter initializations, hyperparameters, and activation functions, I conducted a series of experiments. I first varied the parameter initialization methods and compared their performances. Next, I explored different activation functions, followed by an examination of various hyperparameters.
 To finish with, I varied the size and the number of layers and compared resulting performances. 
@@ -98,7 +98,7 @@ Each initialization method was tested under identical conditions, wich are those
 
 The results demonstrate that proper initialization can significantly affect the learning process and final performance of the model.
 
-**Conclusion**
+**Parameter initialization : conclusion**
 
 Based on the experimentats, He initialization is recommended for networks with ReLu activation functions due to its superior performance. Proper initialization helps in faster convergence and achieving better accuracy.  
 By carefully selecting the initialization method, we can ensure a more efficient and effective training process, ultimately leading to better-performing models.
@@ -140,9 +140,9 @@ To understand the impact of different activation functions, we conducted several
 
 - ReLU : Achieved the highest performances, particulary effective in promoting sparsity and speeding up convergence. However, some neurons might became inactive due to the zeroing effect.
 
-**Conclusion**
+**Activation functions : conclusion**
 
-We can thus say that choosing wisely the activation functions used in the hidden and output layers can significantly increase the performances of the model, leading to faster convvergence and better overall accuracy. 
+We can thus say that choosing wisely the activation functions used in the hidden and output layers can significantly increase the performances of the model, leading to faster convvergence and better overall accuracy. By using ReLU activation function for the hidden layers combined to sigmoid activation function for the output layer as well as He initialization, we can get much better results on our dataset than using other activation function. 
 
 #### III - <u>Number and Size of Layers</u>
 
@@ -185,8 +185,16 @@ To understand the impact of different activation functions, we conducted several
 
  - Deep and wide Network : This network configuration performed the best on the testing set, showing that a combination of depth and width helped a lot in learning more complex patterns and generalizing better to unseend data.
 
- **Conclusion**
+  
+ **Number and Size of Layers : conclusion**
 
  The results highlight the importance of balancing the depths and width of the network. While deeper networks can capture more complex patterns, they are prone to overfitting and to other specific problems like dying ReLU which can deacreases significantly the accuracy of the model. Wider networks can help in capturing more features, but there is a trade-off between complexity and overfitting. The deep and wide network configuration proovided the best results, sugesting that a balanced approach in increasing both the depth and width of the network can lead to better generalization and performance.  
  By carefully selecting the number and size of layers, we can enhance the learning capacity of the model, leading to imrpoved performance on both training and testing sets.  
  Building an L-layer model, where you can adjust the size of the model by simply modifying the values in a list(as in the model used here), is, in my opinion, an excellent approach to create a neural network that effectively fits the data you are analyzing and predicting. This flexibility allows for easy comparison of accuracies and helps in tailoring the model to achive optimal performance based on the dataset you are using.
+
+ ### C - Conclusion
+
+ In the first part of this project, I focused on developing a simple L-layer neural network with basic paramaters, hyperparamaters, and gradient descent implementation. I explored various parameter initializations, activation functions and network sizes. By analyzing the results for each case, I gained insights into how these factors impact the performance and the accuracy of the model, both in the training task and in the prediction task.  
+ Having established a solid foundation with our basic neural network, we now move on to improving the model by incorporating regularization techniques and gradient checking.
+
+ 
