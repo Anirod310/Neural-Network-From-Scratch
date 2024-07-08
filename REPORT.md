@@ -10,7 +10,7 @@ The primary objective of this project is to develop a deep learning model for ca
 - **Step 1: Basic Neural Network**: Introduction of a simple neural network model.
 - **Step 2: Regularization**: Implementation of regularization techniques.
 - **Step 3: Advanced Techniques**: Further enhancements and final model evaluation.
-- **Conclusion**: Summary of findings and potential future work.  
+- **Conclusion**: Summary of findings and future work.  
 
 Without delay, let's get starded !
 
@@ -195,6 +195,43 @@ To understand the impact of different activation functions, we conducted several
  ### C - Conclusion
 
  In the first part of this project, I focused on developing a simple L-layer neural network with basic paramaters, hyperparamaters, and gradient descent implementation. I explored various parameter initializations, activation functions and network sizes. By analyzing the results for each case, I gained insights into how these factors impact the performance and the accuracy of the model, both in the training task and in the prediction task.  
- Having established a solid foundation with our basic neural network, we now move on to improving the model by incorporating regularization techniques and gradient checking.
+ Having established a solid foundation with our basic neural network, we now move on to improving the model by incorporating regularization techniques.
 
+## Step 2 : Regularization
+
+In the first part, we significantly improved the performance of the basic neural network by carefully selecting different parameter values. However, despite this progress, the results revealed a major issue: overfitting. All the results showed a difference of over 20% between the training and testing accuracy, indicating that our model is clearly overfitting.  
+In this section, we aim to address this problem by incorporating advanced techniques such as regularization.  
+The model used for these experiments remains the same as before, utilizing ReLU and Sigmoid activation functions with He Initialization, but with the size layer_dims=[12288, 20, 7, 5, 1] (which has shown the best performance so far).
  
+### A - Model improvement
+
+Below are presented the different regularization techniques used in order to prevent the model from overfitting and to improve it performances.
+
+#### I - <u>L2 regularization</u>
+
+This technique helps to prevent overfitting by adding a penalty term to the cost function, which discourages the model from relying too heavily on any one parameter. It helps in keeping the weights small, thereby imrpoving generalization.
+
+#### II - <u>Dropout</u>
+
+Dropout is a regularization method where, during training, a fraction of the neuroons are randomly ignored in each forward and backward pass. This prevents the network from becoming overly relient on specific paths and encourages it to learn more robust features.
+
+By implementing these techniques, we aim to improve generalization by helping the model generalize better to unseen data by preventing overfitting. Through these imrpovements, we will build a more robut neural network capable of delivering superior performances on both training and testing datasets.
+
+### B - Results analysis
+
+Here's a reminder of the model we use to perform our tests and adjustements :
+
+**Base Model Summary**
+
+| Aspect                 | Description                                   |
+|------------------------|-----------------------------------------------|
+| Model Type             | 4-layer Neural Network                        |
+| Training Input Shape   | (12288, 209)                                  |
+| Testing Input Shape    | (12288, 50)                                   |
+| Hidden Layer Activation| ReLU                                          |
+| Output Layer Activation| Sigmoid                                       |
+| Number of Iterations   | 3000                                          |
+| Learning Rate (alpha)  | 0.0075                                        |
+| Hidden layer size      | 20, 7, 5                                      |
+
+#### I - <u>L2 regularization</u>
