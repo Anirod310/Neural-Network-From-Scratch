@@ -61,7 +61,7 @@ def forward_prop(X, parameters):
 
     Returns:
         AL (numpy.ndarray): The output of the last layer(post-activation value).
-        cache (list): A list of all the caches of linear_activation_forward():
+        caches (list): A list of all the caches of linear_activation_forward():
             the caches are indexed from 0 to L-1.
     """    
     caches = []
@@ -100,14 +100,42 @@ def compute_cost(AL, Y):
 
     return cost
 
+def compute_cost_with_reg(AL, Y, parameters, lambd):
+    """
+    Implement the cost function with L2 regularization.
+    Args:
+        AL (numpy.ndarray): The post-activation value, corresponding to the labels predictions, of shape (1, num examples).
+        Y (numpy.ndarray): The true label vector, of shape (1, num examples).
+        parameters (dict): A dictionary containing the parameters 'W1', 'b1', ..., 'WL', 'bL'.
+        lambd (float): The regularization parameter.
+    
+    Returns:
+        cost(float): the cross_entropy cost with L2 regularization.
+    """
+    m = Y.shape[1]
 
-def linear_backward(dZ, cache):
+    cross_entropy_cost = compute_cost(AL, Y)
+
+    L2_regularization_cost = 0
+    L = len(parameters) // 2
+
+    for l in range(1, L):
+        L2_regularization_cost += np.sum(np.square(parameters['W' + str(l)]))
+
+    L2_regularization_cost = (lambd / (2 * m)) * L2_regularization_cost
+
+    cost = cross_entropy_cost + L2_regularization_cost
+
+    return cost 
+
+def linear_backward(dZ, cache, lambd):
     """
     Computes the linear part of the back propagation.
 
     Args:
         dZ (numpy.ndarray): Gradient of the cost with respect to the linear output of the current layer l.
         cache (tuple): A tuple of values (A_prev, W, b) coming from the forward propagation in the current layer.
+        lambd (float): The regularization parameter.
 
     Returns:
         dA_prev (numpy.ndarray): Gradient of the cost with respect to the activation of the previous layer l-1, same shape as A_prev.
@@ -117,13 +145,13 @@ def linear_backward(dZ, cache):
     A_prev, W, b = cache
     m = A_prev.shape[1]
 
-    dW = 1/m * np.dot(dZ, A_prev.T)
+    dW = 1/m * np.dot(dZ, A_prev.T) + (lambd / m) * W
     db = 1/m * np.sum(dZ, axis=1, keepdims=True)
     dA_prev = np.dot(W.T, dZ)
 
     return dA_prev, dW, db
 
-def linear_activation_backward(dA, cache, activation):
+def linear_activation_backward(dA, cache, activation, lambd):
     """
     Computes the activation part of the back propagation.
 
@@ -141,19 +169,19 @@ def linear_activation_backward(dA, cache, activation):
 
     if activation == 'relu':
         dZ = relu_backward(dA, activation_cache)
-        dA_prev, dW, db = linear_backward(dZ, linear_cache)
+        dA_prev, dW, db = linear_backward(dZ, linear_cache, lambd)
     
     elif activation == 'sigmoid':
         dZ = sigmoid_backward(dA, activation_cache)
-        dA_prev, dW, db = linear_backward(dZ, linear_cache)
+        dA_prev, dW, db = linear_backward(dZ, linear_cache, lambd)
     
     elif activation == 'tanh':
         dZ = tanh_backward(dA, activation_cache)
-        dA_prev, dW, db = linear_backward(dZ, linear_cache)
+        dA_prev, dW, db = linear_backward(dZ, linear_cache, lambd)
 
     return dA_prev, dW, db
 
-def back_prob(AL, Y, caches):
+def back_prob(AL, Y, caches, lambd):
     """
     Computes the back propagation for a deep neural network.
 
@@ -177,14 +205,14 @@ def back_prob(AL, Y, caches):
     dAL = - (np.divide(Y, AL) - np.divide(1 - Y, 1 - AL))
 
     current_cache = caches[L-1]
-    dA_prev_temp, dW_temp, db_temp = linear_activation_backward(dAL, current_cache, 'sigmoid')
+    dA_prev_temp, dW_temp, db_temp = linear_activation_backward(dAL, current_cache, 'sigmoid', lambd)
     grads["dA" + str(L-1)] = dA_prev_temp
     grads["dW" + str(L)] = dW_temp
     grads["db" + str(L)] = db_temp
 
     for l in reversed(range(L-1)):
         current_cache = caches[l]
-        dA_prev_temp, dW_temp, db_temp = linear_activation_backward(grads["dA" + str(l+1)], current_cache, 'relu')
+        dA_prev_temp, dW_temp, db_temp = linear_activation_backward(grads["dA" + str(l+1)], current_cache, 'relu', lambd)
         grads["dA" + str(l)] = dA_prev_temp
         grads["dW" + str(l+1)] = dW_temp
         grads["db" + str(l+1)] = db_temp
@@ -193,7 +221,7 @@ def back_prob(AL, Y, caches):
 
 
 
-def nn_model_base(X, Y, layer_dims, iterations, alpha):
+def nn_model_train(X, Y, layer_dims, iterations, alpha, lambd):
     """
     Implements a L-layer neural network.
 
@@ -206,7 +234,7 @@ def nn_model_base(X, Y, layer_dims, iterations, alpha):
         alpha (float): Learning rate of the gradient descent update rule.
 
     Returns:
-        parameters (dict): Parameters learned by the model. They can be used to predict.
+        parameters (dict): Parameters learned by the model. They can be used to predict results based on new data.
         cost (float): The final cost after the last iteration.
     """    
     np.random.seed(1)
@@ -216,9 +244,9 @@ def nn_model_base(X, Y, layer_dims, iterations, alpha):
     for i in range(iterations):
         AL, caches = forward_prop(X, parameters)
 
-        cost = compute_cost(AL, Y)
+        cost = compute_cost_with_reg(AL, Y, parameters, lambd)
 
-        grads = back_prob(AL, Y, caches)
+        grads = back_prob(AL, Y, caches, lambd)
 
         parameters = update_params(parameters, grads, alpha)
 

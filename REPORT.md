@@ -205,17 +205,17 @@ The model used for these experiments remains the same as before, utilizing ReLU 
  
 ### A - Model improvement
 
-Below are presented the different regularization techniques used in order to prevent the model from overfitting and to improve it performances.
+Below are presented the different regularization techniques used in order to prevent the model from overfitting and to improve its performances.
 
 #### I - <u>L2 regularization</u>
 
-This technique helps to prevent overfitting by adding a penalty term to the cost function, which discourages the model from relying too heavily on any one parameter. It helps in keeping the weights small, thereby imrpoving generalization.
+This technique helps to prevent overfitting by adding a penalty term to the cost function, which discourages the model from relying too heavily on any one parameter. It helps in keeping the weights small, thereby improving generalization.
 
 #### II - <u>Dropout</u>
 
 Dropout is a regularization method where, during training, a fraction of the neuroons are randomly ignored in each forward and backward pass. This prevents the network from becoming overly relient on specific paths and encourages it to learn more robust features.
 
-By implementing these techniques, we aim to improve generalization by helping the model generalize better to unseen data by preventing overfitting. Through these imrpovements, we will build a more robut neural network capable of delivering superior performances on both training and testing datasets.
+By implementing these techniques, we aim to improve generalization by helping the model generalize better to unseen data by preventing overfitting. Through these improvements, we will build a more robut neural network capable of delivering superior performances on both training and testing datasets.
 
 ### B - Results analysis
 
@@ -234,4 +234,20 @@ Here's a reminder of the model we use to perform our tests and adjustements :
 | Learning Rate (alpha)  | 0.0075                                        |
 | Hidden layer size      | 20, 7, 5                                      |
 
-#### I - <u>L2 regularization</u>
+**Results**
+
+| Regularization method | Training Accuracy | Testing Accuracy |
+|-----------------------|-------------------|------------------|
+| None                  | 100%              | 80%              |
+| L2 regularization     | 92%               | 78%              |
+| Dropout               | 90%               | 80%              |
+
+**Discussion**
+
+The results of the experiments demonstrated that applying L2 regularization and/or dropout significantly reduces the model's tendency to learn noise or overly specific details from the training set. This allows the model to generalize better to new data, leading to improved accuracy on the testing dataset. We reduced the difference between training and testing accuracy from 20% to 10%—showcasing the effectiveness of regularization.
+
+### C - Conclusion
+
+In the second part of this project, I delved into more advanced concepts, specifically regularization techniques, to enhance the performance of the base neural network model. The primary goal was to mitigate overfitting to the training data and improve the model's efficiency on unseen data. Regularization proved to be indispensable in this context, particularly given the small dataset used in this project.  
+Techniques like dropout and L2 regularization are not only straightforward to implement but also require minimal adjustments to the existing neural network structure. Despite their simplicity, these methods significantly boost the model's generalization capability, reducing the gap between training and testing accuracy. This demonstrates that even basic regularization techniques can have a profound impact on model performance, making them essential tools in the deep learning toolkit, especially when working with limited data.  
+As we move forward, it's crucial to consider these regularization methods as fundamental steps in the development of robust neural networks, particularly when aiming to build models that perform well in real-world scenarios where data is often scarce.

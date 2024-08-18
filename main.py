@@ -11,7 +11,7 @@ X_train, X_test = reshape_standardize_train_test_examples(X_train_orig, X_test_o
 
 
 
-parameters, cost= nn_model_base(X_train, Y_train, layer_dims=[12288, 20, 7, 5, 1], iterations=3000, alpha=0.0075)
+parameters, cost= nn_model_train(X_train, Y_train, layer_dims=[12288, 20, 7, 5, 1], iterations=3000, alpha=0.0075, lambd=0.7)
 print("cost at the end", cost)
 
 
