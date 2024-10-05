@@ -21,13 +21,6 @@ To ensure reproducibility, the following environment setup is recommended:
 
 - **Python version**: 3.8 or later
 - **IDE**: Jupyter Notebook or any other Python IDE
-## Dependencies
-
-Install the required dependencies using the following command:
-
-```bash
-pip install -r requirements.txt
-```
 ## Troubleshooting  
 
 If you are having trouble getting the model to work, you can check the following :
