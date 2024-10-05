@@ -10,7 +10,7 @@ A project in which I learn to code a L-layer neural network from scratch, using 
     - Try L2 regularization and Dropout and analyze the results for each.
 
 - Improve the model even more by implementing better optimizers methods :
-    - Implement momentum
+    - Implement Momentum
     - Implement Adam
 
 
