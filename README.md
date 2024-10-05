@@ -7,7 +7,7 @@ A project in which I learn to code a L-layer neural network from scratch, using 
     - Analyze the results for each case.
 
 - Improve the model by adding regularization and gradient checking :
-    - Try L2 regularization and dropout and analyze the results for each.
+    - Try L2 regularization and analyze the results.
     - Implement gradient checking to verify the accuracy of the backprob part of the model.
 
 - Optimize the model even more by implementing new algorithms and hyperparameters :
