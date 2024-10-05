@@ -79,6 +79,41 @@ def forward_prop(X, parameters):
 
     return AL, caches
 
+def forward_prop_dropout(X, parameters, keep_prob):
+    """
+    Computes the forward propagation of a deep neural network.
+
+    Args:
+        X (numpy.ndarray): Input data of shape(input size, num examples).
+        parameters (dict): A dictionary containing the parameters 'W1', 'b1', ..., 'WL', 'bL'.
+        keep_prob (float): The probability used to drop or not each neuron during the forprop.
+
+    Returns:
+        AL (numpy.ndarray): The output of the last layer(post-activation value).
+        caches (list): A list of all the caches of linear_activation_forward():
+            the caches are indexed from 0 to L-1.
+    """    
+    caches = []
+    A = X
+    L = len(parameters) // 2
+
+    for l in range(1, L):
+        A_prev = A
+        Z, linear_cache = linear_forward(A_prev, parameters['W' + str(l)], parameters['b' + str(l)])
+        A, activation_cache = relu(Z)
+
+        D = (np.random.rand(A.shape[0], A.shape[1]) < keep_prob).astype(int)
+        A = np.multiply(A, D)  
+        A = A / keep_prob 
+
+        cache = (linear_cache, activation_cache, D)
+        caches.append(cache)
+    
+    AL, cache = linear_activation_forward(A, parameters['W' + str(L)], parameters['b' + str(L)], 'sigmoid')
+    caches.append(cache)
+
+    return AL, caches
+
 
 def compute_cost(AL, Y):
     """
@@ -92,6 +127,8 @@ def compute_cost(AL, Y):
         cost (float): The cross-entropy cost.
     """    
     m = Y.shape[1]
+
+    AL = np.clip(AL, 1e-10, 1 - 1e-10)
 
     logprobs = np.multiply(np.log(AL), Y)
     cost = -1/m * np.sum(logprobs + (1-Y) * np.log(1-AL))
@@ -113,6 +150,8 @@ def compute_cost_with_reg(AL, Y, parameters, lambd):
         cost(float): the cross_entropy cost with L2 regularization.
     """
     m = Y.shape[1]
+
+    AL = np.clip(AL, 1e-10, 1 - 1e-10)
 
     cross_entropy_cost = compute_cost(AL, Y)
 
@@ -151,6 +190,44 @@ def linear_backward(dZ, cache, lambd):
 
     return dA_prev, dW, db
 
+def linear_activation_backward_dropout(dA, cache, activation, lambd, keep_prob):
+    """
+    Computes the activation part of the back propagation.
+
+    Args:
+        dA (numpy.ndarray): Post-activation gradient for the current layer l.
+        cache (tuple): A tuple of values (linear_cache, activation_cache) we store for retrieving the parameters we need for back propagation.
+        activation (str): The activation used in this layer, stored as a text string: 'sigmoid', 'tanh' or 'relu'.
+        lambd (float): The regularization parameter.
+        keep_prob (float): The probability used to drop or not each neuron.
+
+    Returns:
+        dA_prev (numpy.ndarray): Gradient of the cost with respect to the activation of the previous layer l-1, same shape as A_prev.
+        dW (numpy.ndarray): Gradient of the cost with respect to W of the current layer l, same shape as W.
+        db (numpy.ndarray): Gradient of the cost with respect to b of the current layer l, same shape as b.
+    """    
+    if len(cache) == 3:
+        linear_cache, activation_cache, D = cache
+        dA = np.multiply(dA, D)
+        dA = dA / keep_prob
+    else: 
+        linear_cache, activation_cache = cache
+
+    if activation == 'relu':
+        dZ = relu_backward(dA, activation_cache)
+        dA_prev, dW, db = linear_backward(dZ, linear_cache, lambd)
+    
+    elif activation == 'sigmoid':
+        dZ = sigmoid_backward(dA, activation_cache)
+        dA_prev, dW, db = linear_backward(dZ, linear_cache, lambd)
+    
+    elif activation == 'tanh':
+        dZ = tanh_backward(dA, activation_cache)
+        dA_prev, dW, db = linear_backward(dZ, linear_cache, lambd)
+
+    return dA_prev, dW, db
+
+
 def linear_activation_backward(dA, cache, activation, lambd):
     """
     Computes the activation part of the back propagation.
@@ -159,6 +236,7 @@ def linear_activation_backward(dA, cache, activation, lambd):
         dA (numpy.ndarray): Post-activation gradient for the current layer l.
         cache (tuple): A tuple of values (linear_cache, activation_cache) we store for retrieving the parameters we need for back propagation.
         activation (str): The activation used in this layer, stored as a text string: 'sigmoid', 'tanh' or 'relu'.
+        lambd (float): The regularization parameter.
 
     Returns:
         dA_prev (numpy.ndarray): Gradient of the cost with respect to the activation of the previous layer l-1, same shape as A_prev.
@@ -181,7 +259,7 @@ def linear_activation_backward(dA, cache, activation, lambd):
 
     return dA_prev, dW, db
 
-def back_prob(AL, Y, caches, lambd):
+def back_prob(AL, Y, caches, lambd, keep_prob):
     """
     Computes the back propagation for a deep neural network.
 
@@ -190,6 +268,8 @@ def back_prob(AL, Y, caches, lambd):
         Y (numpy.ndarray): True label vector, of shape (1, num examples).
         caches (list): List of caches containing every cache of linear_activation_forward() with "relu" (there are L-1 of them, indexed from 0 to L-2),
           and the cache of linear_activation_forward() with "sigmoid" (indexed L-1).
+        lambd (float): The regularization parameter.
+        keep_prob (float): The probability used to drop or not each neuron.
 
     Returns:
         grads (dict): A dictionary with the gradients with respect to different parameters:
@@ -202,17 +282,19 @@ def back_prob(AL, Y, caches, lambd):
     m = AL.shape[1]
     Y = Y.reshape(AL.shape)
 
+    AL = np.clip(AL, 1e-10, 1 - 1e-10)
+
     dAL = - (np.divide(Y, AL) - np.divide(1 - Y, 1 - AL))
 
     current_cache = caches[L-1]
-    dA_prev_temp, dW_temp, db_temp = linear_activation_backward(dAL, current_cache, 'sigmoid', lambd)
+    dA_prev_temp, dW_temp, db_temp = linear_activation_backward_dropout(dAL, current_cache, 'sigmoid', lambd, keep_prob)
     grads["dA" + str(L-1)] = dA_prev_temp
     grads["dW" + str(L)] = dW_temp
     grads["db" + str(L)] = db_temp
 
     for l in reversed(range(L-1)):
         current_cache = caches[l]
-        dA_prev_temp, dW_temp, db_temp = linear_activation_backward(grads["dA" + str(l+1)], current_cache, 'relu', lambd)
+        dA_prev_temp, dW_temp, db_temp = linear_activation_backward_dropout(grads["dA" + str(l+1)], current_cache, 'relu', lambd, keep_prob)
         grads["dA" + str(l)] = dA_prev_temp
         grads["dW" + str(l+1)] = dW_temp
         grads["db" + str(l+1)] = db_temp
@@ -221,7 +303,7 @@ def back_prob(AL, Y, caches, lambd):
 
 
 
-def nn_model_train(X, Y, layer_dims, iterations, alpha, lambd):
+def nn_model_train(X, Y, layer_dims, iterations, alpha, lambd, keep_prob):
     """
     Implements a L-layer neural network.
 
@@ -232,25 +314,31 @@ def nn_model_train(X, Y, layer_dims, iterations, alpha, lambd):
             it length is the num of layers and each element is the num of nodes in the layer l.
         iterations (int): Number of iterations of the optimisation loop.
         alpha (float): Learning rate of the gradient descent update rule.
+        lambd (float): The regularization parameter.
+        keep_prob (float): The probability used to drop or not each neuron.
 
     Returns:
         parameters (dict): Parameters learned by the model. They can be used to predict results based on new data.
         cost (float): The final cost after the last iteration.
     """    
     np.random.seed(1)
+    t = 0
 
     parameters = init_params(layer_dims)
+    v = init_v(parameters)
 
     for i in range(iterations):
-        AL, caches = forward_prop(X, parameters)
+        AL, caches = forward_prop_dropout(X, parameters, keep_prob)
 
         cost = compute_cost_with_reg(AL, Y, parameters, lambd)
 
-        grads = back_prob(AL, Y, caches, lambd)
+        grads = back_prob(AL, Y, caches, lambd, keep_prob)
+        
+        t += 1
 
-        parameters = update_params(parameters, grads, alpha)
+        parameters, v = update_params_momentum(parameters, grads, alpha, v, beta=0.9)
 
-        if i % 1000 == 0:
-            print ("Cost after iteration %i: %f" %(i, cost))
+        if (i % (iterations//10) if iterations > 10 else iterations) == 0:
+            print (f"Cost after iteration {i}: {cost:.4f}")
 
     return parameters, cost
