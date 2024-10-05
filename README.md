@@ -1,14 +1,13 @@
 # Neural-network-from-scratch
 A project in which I learn to code a L-layer neural network from scratch, using numpy and matplotlib. The project is separated in different stages : 
-- Code a simple L-layer neural network with basic parameters, hyperparameters and gradient descent implementation, without any regularisation or optimisation method :
+- Build a simple L-layer neural network with simple hyperparameter and gradient descent implementations :
     - Try different parameter initialisations.
     - Try different activation functions.
     - Vary the size of the neural network (adding/removing layers/nodes).
     - Analyze the results for each case.
 
-- Improve the model by adding regularization and gradient checking :
+- Improve the model by adding regularization :
     - Try L2 regularization and analyze the results.
-    - Implement gradient checking to verify the accuracy of the backprob part of the model.
 
 - Improve the model even more by implementing better optimizers methods :
     - Implement mini-batch gradient descent and compare the performances
