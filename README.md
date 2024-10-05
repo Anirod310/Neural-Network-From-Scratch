@@ -20,7 +20,7 @@ You can follow the entire project walkthrough in the [report](REPORT.md) file.
 To ensure reproducibility, the following environment setup is recommended:
 
 - **Python version**: 3.8 or later
-- **IDE**: Jupyter Notebook or any other Python IDE
+- **IDE**: Any Python IDE
 ## Troubleshooting  
 
 If you are having trouble getting the model to work, you can check the following :
