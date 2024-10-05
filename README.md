@@ -14,7 +14,6 @@ A project in which I learn to code a L-layer neural network from scratch, using 
     - Implement mini-batch gradient descent and compare the performances
     - Implement momentum
     - Implement Adam
-    - Implement learning rate decay
 
 
 You can follow the entire project walkthrough in the [report](REPORT.md) file.
