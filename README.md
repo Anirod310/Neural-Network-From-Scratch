@@ -1,5 +1,5 @@
 # Neural-network-from-scratch
-A project in which I learn to code a L-layer neural network from scratch, using numpy and matplotlib. The project is separated in different stages : 
+A project in which I learn to code a L-layer neural network from scratch, using numpy and matplotlib. The project is separated in different parts : 
 - Build a simple L-layer neural network with simple hyperparameter and gradient descent implementations :
     - Try different parameter initialisations.
     - Try different activation functions.
@@ -23,9 +23,9 @@ To ensure reproducibility, the following environment setup is recommended:
 - **IDE**: Any Python IDE
 ## Troubleshooting  
 
-If you are having trouble getting the model to work, you can check the following :
+If you are having troubles getting the model to work, you can check the following :
 - Make sure that you installed the correct dependencies.
 - Make sure that the data are formated correctly.
-If you still have trouble, you can ask for help on a forum or chat room dedicated to linear regression, or contact me at **bousek.dorian@gmail.com**.  
+If you still have troubles, you can ask for help on a forum or chat room dedicated to linear regression, or contact me at **bousek.dorian@gmail.com**.  
 
 I hope this helps ! 
