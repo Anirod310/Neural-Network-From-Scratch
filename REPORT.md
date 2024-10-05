@@ -304,7 +304,7 @@ Now that we understand better what is momentum and adam, we will implement them 
 
 **Results**
 
-*Note : For the adam optimizer, we changed the learning rate to 0.001, since this is the value well-known to outperforms the other ones by far in most cases. We also decreased the number of iteration to 2500, since the adam optimizer is also well-known for working well with the early stopping method.*
+*Note : For the adam optimizer, I changed the learning rate to 0.001, since this is the value well-known to outperforms the other ones by far in most cases. We also decreased the number of iteration to 2500, since the adam optimizer is also well-known for working well with the early stopping method.*
 
 | Optimizer               | Training Accuracy | Testing Accuracy |
 |-------------------------|-------------------|------------------|
