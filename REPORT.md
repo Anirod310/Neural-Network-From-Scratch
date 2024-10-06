@@ -15,7 +15,7 @@ The primary objective of this project is to develop a deep learning model for sp
 Without delay, let's get starded !
 
 ## Step 1 : Basic Neural Network
-In this section, we build and evaluate a simple neural network model. This basic model serves as a foundation for further improvments and enhancements that will be discussed in subsequent sections.
+In this section, I build and evaluate a simple neural network model. This basic model serves as a foundation for further improvments and enhancements that will be discussed in subsequent sections.
 
 ### A - Model architecture
 
@@ -29,7 +29,7 @@ To begin with, the dataset we're using was created by George Forman and is publi
 
 #### II - <u>Parameters, hyperparamters, forward/backward propagation, activation functions</u>
 
-For this model, the only parameters are W and b (respectively representing weight and biase), and are initialized in 4 different ways : 
+For the first part of this project, the only parameters are W and b (respectively representing weight and biase), and are initialized in 4 different ways : 
  - Initialization with zeros for both W and b.
  - Random initialization for W(scaled by 0.01) and with zeros for b.
  - Xavier initialization for W and with zeros for b.
@@ -38,18 +38,18 @@ For this model, the only parameters are W and b (respectively representing weigh
 
 As you can see in the [main](main.py) file, the hyperparameters/args we use are the learning rate alpha, the number of iterations of the optimization loop, and the dimensions of the layer.
 
-Also, by looking at the [base_model](base_model.py) file, you can see that the forprop and backprop steps are entirely coded from scratch, using the corresponding math formulas and numpy. Also, instead of coding directly all the forprop and backprop process in one function, I implemented several steps to split all the process in smaller functions, such as the linear computing step, the activation computing step, etc.
+Also, by looking at the [base_model](base_model.py) file, you can see that the forpropagation and backpropagation steps are entirely coded from scratch, using the corresponding math formulas and the numpy library. Also, instead of coding directly all the forprop and backprop process in one function, I implemented several steps to split all the process in smaller functions, such as the linear computing step, the activation computing step, etc.
 
-The activation functions we use are sigmoid, reLU and tanh.
+The activation functions we use are sigmoid, relu and tanh.
 
-We'll see after how the modification of the parameters, hyperparameters, number and size of layers and activation functions impacts the learning process of the model.
+We'll see below how the modification of the parameters, hyperparameters, number and size of layers and activation functions impacts the learning process of the model.
 
 ### B - Results analysis
 
 To evaluate the differences among various parameter initializations, hyperparameters, and activation functions, I conducted a series of experiments. I first varied the parameter initialization methods and compared their performances. Next, I explored different activation functions, followed by an examination of various hyperparameters.
 To finish with, I varied the size and the number of layers and compared resulting performances. 
 
-The base model used is a 2-layer neural network. The training and testing inputs have shapes of **(57, 3680)** and **(57, 921)**, respectively. The activation function for the hidden layer is ReLU and for the output layer, it is sigmoid. The model was trained for 5000 iterations with a learning rate (alpha) of 0.01. The size of the hidden layer is 4.
+The base model used is a 2-layer neural network. The training and testing inputs have shapes of **(57, 3680)** and **(57, 921)**, respectively. The activation function for the hidden layer is relu and for the output layer, it is sigmoid. The model was trained for 5000 iterations with a learning rate (alpha) of 0.01. The size of the hidden layer is 4.
 
 **Base Model Summary**
 
@@ -66,11 +66,11 @@ The base model used is a 2-layer neural network. The training and testing inputs
 
 #### I - <u>Parameter initialization</u>
 
-Parameter initialization is a critical step in training neural networks. Proper initialization can speed up the convergence of the training process and improve the overall performance of the model. Conversely, poor initialization can lead to slow convergence, vanishing or exploding gradients, and suboptimal performance. Here, I tried 4 different parameter initialization methods.
+Parameter initialization is a critical step in training neural networks. Proper initialization can speed up the convergence of the training process and improves the overall performance of the model. Conversely, poor initialization can lead to slow convergence, vanishing or exploding gradients, and suboptimal performance. Here, I tried 4 different parameter initialization methods.
 
 1. *Zero Initialization*
     - All weights are initialized to zero.
-    - This method is rarely used because it leads to symetry problems where eache neuron in the layer learns the same features.
+    - This method is rarely used because it leads to symetry problems where each neuron in the layer learns the same features.
 2. *Random Initialization*
     - Weights are initialized randomly, usually from a Gaussian or uniform distribution.
     - The common method is :
@@ -97,14 +97,14 @@ Each initialization method was tested under identical conditions, wich are those
 
 - Zero Init : As expected, zero initialization led to poor performance due to symetry problems.
 - Random Init : This method showed decent performance on this dataset but is often outperformed by more sophisicated methods.
-- Xavien Init : In this experiment, it provided same performances that the random initialization, but it's mostly  because the Xavier initialization performs better on deeper networks.
-- He Init : Achieved the best performances, particulary effective with ReLU activation functions due to its ability to mitigate vanishing and exploding gradients.
+- Xavien Init : In this experiment, it provided same performance that the random initialization, but it's mostly  because the Xavier initialization performs better on deeper networks.
+- He Init : Achieved the best performance, particulary effective with the ReLU activation function due to its ability to mitigate vanishing and exploding gradients.
 
 The results demonstrate that proper initialization can significantly affect the learning process and final performance of the model.
 
 **Parameter initialization : conclusion**
 
-Based on the experimentats, He initialization is recommended for networks with ReLu activation functions due to its superior performance. Proper initialization helps in faster convergence and achieving better accuracy.  
+Based on the experimentats, He initialization is recommended for networks with relu activation functions due to its superior performance. Proper initialization helps in faster convergence and achieving better accuracy.  
 By carefully selecting the initialization method, we can ensure a more efficient and effective training process, ultimately leading to better-performing models.
 
 #### II - <u>Activation functions</u>
